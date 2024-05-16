@@ -1,8 +1,7 @@
-function addCoderButton(coderUrl, gitlabUrl) {
-  const isGitHub = window.location.hostname.includes('github.com');
-  const isGitLab = window.location.hostname.includes('gitlab.com') || (gitlabUrl && window.location.hostname.includes(new URL(gitlabUrl).hostname));
+function addCoderButton(coderUrl, repoUrls) {
+  const isSupportedRepo = repoUrls.some(repoUrl => window.location.hostname.includes(new URL(repoUrl).hostname));
 
-  if (isGitHub) {
+  if (isSupportedRepo) {
     document.querySelectorAll('.file-actions').forEach(actionBar => {
       if (!actionBar.querySelector('.open-in-coder')) {
         const button = document.createElement('button');
@@ -13,29 +12,9 @@ function addCoderButton(coderUrl, gitlabUrl) {
         `;
         button.onclick = () => {
           const filePath = window.location.pathname;
-          const repoUrl = `https://github.com${filePath}`;
-          window.open(`${coderUrl}${encodeURIComponent(repoUrl)}`, '_blank');
-        };
-        actionBar.appendChild(button);
-      }
-    });
-  } else if (isGitLab) {
-    document.querySelectorAll('.file-actions').forEach(actionBar => {
-      if (!actionBar.querySelector('.open-in-coder')) {
-        const button = document.createElement('button');
-        button.className = 'btn btn-default btn-md gl-button btn-icon open-in-coder';
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-toggle', 'tooltip');
-        button.setAttribute('data-placement', 'bottom');
-        button.setAttribute('aria-label', 'Open this file in Coder');
-        button.setAttribute('title', 'Open this file in Coder');
-        button.innerHTML = `
-          <img src="${chrome.runtime.getURL('icon.png')}" alt="Open in Coder" />
-        `;
-        button.onclick = () => {
-          const filePath = window.location.pathname;
           const repoUrl = `${window.location.origin}${filePath}`;
-          window.open(`${coderUrl}${encodeURIComponent(repoUrl)}`, '_blank');
+          const coderLink = `${coderUrl}${encodeURIComponent(repoUrl)}`;
+          window.open(coderLink, '_blank');
         };
         actionBar.appendChild(button);
       }
@@ -44,14 +23,15 @@ function addCoderButton(coderUrl, gitlabUrl) {
 }
 
 function initialize() {
-  chrome.storage.sync.get(['coderUrl', 'gitlabUrl'], function(data) {
-    const coderUrl = data.coderUrl || 'https://you.domain/open?repo=';
-    const gitlabUrl = data.gitlabUrl || '';
-    addCoderButton(coderUrl, gitlabUrl);
+  chrome.storage.sync.get(['coderUrl', 'repoUrls'], function(data) {
+    const coderUrl = data.coderUrl || '';
+    const repoUrls = data.repoUrls || [];
+    addCoderButton(coderUrl, repoUrls);
   });
 
   // Наблюдаем за изменениями в DOM
   const observer = new MutationObserver(() => {
+    observer.disconnect();
     initialize();
   });
   observer.observe(document.body, { childList: true, subtree: true });

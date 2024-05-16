@@ -25,7 +25,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://github.com/*", "https://gitlab.com/*", "https://your-selfhosted-gitlab.com/*"],
+      "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
   ],
