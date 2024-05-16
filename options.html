@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Open in Coder - Settings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 300px;
+      margin: 0 auto;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h3>Open in Coder - Settings</h3>
+  <div class="input-group">
+    <label for="coder-url">Coder URL:</label>
+    <input type="text" id="coder-url" placeholder="https://you.domain/open?repo=">
+  </div>
+  <div class="input-group">
+    <label for="gitlab-url">GitLab URL (optional):</label>
+    <input type="text" id="gitlab-url" placeholder="https://your-selfhosted-gitlab.com">
+  </div>
+  <button id="save-btn">Save</button>
+</div>
+<script src="options.js"></script>
+</body>
+</html>
