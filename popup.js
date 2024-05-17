@@ -1,13 +1,31 @@
-document.getElementById('openCoder').addEventListener('click', function() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        var activeTab = tabs[0];
-        var repoUrl = activeTab.url;
+document.addEventListener('DOMContentLoaded', function () {
+    const cloneTypeCheckbox = document.getElementById('clone-type');
+    const openCoderButton = document.getElementById('openCoder');
 
-        // Загрузка сохраненных настроек
-        chrome.storage.sync.get(['coderUrl'], function(data) {
-            var coderUrl = data.coderUrl || 'https://your-coder-url.com/open?repo=';
-            var fullUrl = coderUrl + encodeURIComponent(repoUrl);
-            chrome.tabs.create({ url: fullUrl });
+    // Загрузка сохраненных настроек
+    chrome.storage.sync.get(['cloneType'], function (data) {
+        if (data.cloneType === 'ssh') {
+            cloneTypeCheckbox.checked = true;
+        } else {
+            cloneTypeCheckbox.checked = false;
+        }
+    });
+
+    // Автоматическое сохранение типа клонирования при изменении состояния чекбокса
+    cloneTypeCheckbox.addEventListener('change', function () {
+        const cloneType = cloneTypeCheckbox.checked ? 'ssh' : 'https';
+        chrome.storage.sync.set({ cloneType }, function () {
+            console.log('Clone type saved:', cloneType);
+        });
+    });
+
+    // Открытие в Coder при нажатии кнопки "Open in Coder"
+    openCoderButton.addEventListener('click', function () {
+        chrome.storage.sync.get(['coderUrl'], function (data) {
+            const coderUrl = data.coderUrl || '';
+            const repoUrl = window.location.href;
+            const coderLink = `${coderUrl}${encodeURIComponent(repoUrl)}`;
+            window.open(coderLink, '_blank');
         });
     });
 });

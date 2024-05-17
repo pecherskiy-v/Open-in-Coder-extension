@@ -7,7 +7,6 @@
             width: 200px;
             font-family: Arial, sans-serif;
         }
-
         button {
             width: 100%;
             padding: 10px;
@@ -15,15 +14,27 @@
             color: white;
             border: none;
             cursor: pointer;
+            margin-top: 10px;
         }
-
         button:hover {
             background-color: #45a049;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
 <h3>Open in Coder</h3>
+<div class="checkbox-container">
+    <input type="checkbox" id="clone-type">
+    <label for="clone-type">Use SSH</label>
+</div>
 <button id="openCoder">Open in Coder</button>
 <script src="popup.js"></script>
 </body>

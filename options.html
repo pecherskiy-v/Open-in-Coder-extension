@@ -1,65 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Open in Coder - Settings</title>
+  <title>Open in Coder Settings</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      margin: 20px;
     }
-    .container {
-      width: 300px;
-      margin: 0 auto;
-    }
-    .input-group {
-      margin-bottom: 15px;
-    }
-    .input-group label {
+    label {
       display: block;
-      margin-bottom: 5px;
+      margin: 8px 0;
     }
-    .input-group input {
-      width: 100%;
+    input[type="text"] {
+      width: calc(100% - 20px);
       padding: 8px;
+      margin: 4px 0;
       box-sizing: border-box;
     }
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+    }
+    .checkbox-container input[type="checkbox"] {
+      margin-right: 10px;
+    }
     button {
-      padding: 10px 20px;
       background-color: #4CAF50;
       color: white;
+      padding: 10px;
       border: none;
       cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
     }
     button:hover {
       background-color: #45a049;
     }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
-    }
-    li button {
-      background-color: #f44336;
-      padding: 5px 10px;
-      border: none;
-      cursor: pointer;
-      color: white;
+    #save-btn {
+      max-width: 200px;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <h3>Open in Coder - Settings</h3>
-  <div class="input-group">
-    <label for="coder-url">Coder URL:</label>
-    <input type="text" id="coder-url">
-  </div>
-  <button id="save-btn">Save</button>
+<h3>Open in Coder Settings</h3>
+<label for="coder-url">Coder URL:</label>
+<input type="text" id="coder-url">
+<div class="checkbox-container">
+  <input type="checkbox" id="clone-type">
+  <label for="clone-type">Use SSH</label>
 </div>
+<button id="save-btn">Save</button>
 <script src="options.js"></script>
 </body>
 </html>

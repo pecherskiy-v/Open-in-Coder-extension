@@ -19,30 +19,37 @@ function createCoderButton(coderUrl) {
     button.appendChild(img);
 
     button.onclick = () => {
-        const filePath = window.location.pathname;
-        const repoUrl = `${window.location.origin}${filePath}`;
-        const coderLink = `${coderUrl}${encodeURIComponent(repoUrl)}`;
-        window.open(coderLink, '_blank');
+        chrome.storage.sync.get(['cloneType', 'coderUrl'], function (data) {
+            const filePath = window.location.pathname;
+            let repoUrl;
+            if (data.cloneType === 'ssh') {
+                repoUrl = document.querySelector('#ssh_project_clone').getAttribute('value');
+            } else {
+                repoUrl = document.querySelector('#http_project_clone').getAttribute('value');
+            }
+            const coderLink = `${data.coderUrl}${encodeURIComponent(repoUrl)}`;
+            window.open(coderLink, '_blank');
+        });
     };
 
     return button;
 }
 
-// function addCoderButtonToFileActions(coderUrl) {
-//     const targetSelector = '#fileHolder > div.js-file-title.file-title-flex-parent > div.gl-display-flex.gl-flex-wrap.file-actions';
-//     const targetElement = document.querySelector(targetSelector);
-//
-//     if (targetElement && !targetElement.querySelector('.open-in-coder')) {
-//         const buttonGroup = document.createElement('div');
-//         buttonGroup.className = 'btn-group ml-2';
-//         buttonGroup.setAttribute('role', 'group');
-//
-//         const button = createCoderButton(coderUrl);
-//         buttonGroup.appendChild(button);
-//
-//         targetElement.appendChild(buttonGroup);
-//     }
-// }
+function addCoderButtonToFileActions(coderUrl) {
+    const targetSelector = '#fileHolder > div.js-file-title.file-title-flex-parent > div.gl-display-flex.gl-flex-wrap.file-actions';
+    const targetElement = document.querySelector(targetSelector);
+
+    if (targetElement && !targetElement.querySelector('.open-in-coder')) {
+        const buttonGroup = document.createElement('div');
+        buttonGroup.className = 'btn-group ml-2';
+        buttonGroup.setAttribute('role', 'group');
+
+        const button = createCoderButton(coderUrl);
+        buttonGroup.appendChild(button);
+
+        targetElement.appendChild(buttonGroup);
+    }
+}
 
 function addCoderButtonToMainFileActions(coderUrl) {
     const targetSelector = '#tree-holder > div.nav-block.gl-display-flex.gl-xs-flex-direction-column.gl-align-items-stretch > div.tree-controls > div.d-block.d-sm-flex.flex-wrap.align-items-start.gl-children-ml-sm-3.gl-first-child-ml-sm-0';
@@ -85,10 +92,17 @@ function addCoderButtonToRepoDetails(coderUrl) {
         itemGroup.appendChild(button);
 
         button.onclick = () => {
-            const filePath = window.location.pathname;
-            const repoUrl = `${window.location.origin}${filePath}`;
-            const coderLink = `${coderUrl}${encodeURIComponent(repoUrl)}`;
-            window.open(coderLink, '_blank');
+            chrome.storage.sync.get(['cloneType', 'coderUrl'], function (data) {
+                const filePath = window.location.pathname;
+                let repoUrl;
+                if (data.cloneType === 'ssh') {
+                    repoUrl = document.querySelector('#ssh_project_clone').getAttribute('value');
+                } else {
+                    repoUrl = document.querySelector('#http_project_clone').getAttribute('value');
+                }
+                const coderLink = `${data.coderUrl}${encodeURIComponent(repoUrl)}`;
+                window.open(coderLink, '_blank');
+            });
         };
 
         listItem.appendChild(itemGroup);
@@ -111,7 +125,7 @@ function initialize() {
 
 function addCoderButton(coderUrl) {
     addCoderButtonToMainFileActions(coderUrl);
-    // addCoderButtonToFileActions(coderUrl);
+    addCoderButtonToFileActions(coderUrl);
     addCoderButtonToRepoDetails(coderUrl);
 }
 
