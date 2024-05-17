@@ -28,8 +28,24 @@ function createCoderButton(coderUrl) {
     return button;
 }
 
-function addCoderButtonToFileActions(coderUrl) {
-    const targetSelector = '#fileHolder > div.js-file-title.file-title-flex-parent > div.gl-display-flex.gl-flex-wrap.file-actions';
+// function addCoderButtonToFileActions(coderUrl) {
+//     const targetSelector = '#fileHolder > div.js-file-title.file-title-flex-parent > div.gl-display-flex.gl-flex-wrap.file-actions';
+//     const targetElement = document.querySelector(targetSelector);
+//
+//     if (targetElement && !targetElement.querySelector('.open-in-coder')) {
+//         const buttonGroup = document.createElement('div');
+//         buttonGroup.className = 'btn-group ml-2';
+//         buttonGroup.setAttribute('role', 'group');
+//
+//         const button = createCoderButton(coderUrl);
+//         buttonGroup.appendChild(button);
+//
+//         targetElement.appendChild(buttonGroup);
+//     }
+// }
+
+function addCoderButtonToMainFileActions(coderUrl) {
+    const targetSelector = '#tree-holder > div.nav-block.gl-display-flex.gl-xs-flex-direction-column.gl-align-items-stretch > div.tree-controls > div.d-block.d-sm-flex.flex-wrap.align-items-start.gl-children-ml-sm-3.gl-first-child-ml-sm-0';
     const targetElement = document.querySelector(targetSelector);
 
     if (targetElement && !targetElement.querySelector('.open-in-coder')) {
@@ -94,7 +110,8 @@ function initialize() {
 }
 
 function addCoderButton(coderUrl) {
-    addCoderButtonToFileActions(coderUrl);
+    addCoderButtonToMainFileActions(coderUrl);
+    // addCoderButtonToFileActions(coderUrl);
     addCoderButtonToRepoDetails(coderUrl);
 }
 
